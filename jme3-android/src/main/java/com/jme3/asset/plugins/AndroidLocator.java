@@ -91,7 +91,7 @@ public class AndroidLocator implements AssetLocator {
         private InputStream in;
         private final String assetPath;
         private int resourceId;
-
+        private static final String AssetOpenError="Failed to open asset";
         AndroidAssetInfo(AssetManager assetManager, AssetKey<?> key, String assetPath, InputStream in, int resourceId) {
             super(assetManager, key);
             this.assetPath = assetPath;
@@ -113,13 +113,13 @@ public class AndroidLocator implements AssetLocator {
                     try {
                         return androidResources.getAssets().open(assetPath);
                     } catch (IOException ex) {
-                        throw new AssetLoadException("Failed to open asset " + assetPath, ex);
+                        throw new AssetLoadException(AssetOpenError + assetPath, ex);
                     }
                 } else {
                     try {
                         return androidResources.openRawResource(resourceId);
                     } catch (Resources.NotFoundException ex) {
-                        throw new AssetLoadException("Failed to open asset " + assetPath, ex);
+                        throw new AssetLoadException(AssetOpenError + assetPath, ex);
                     }
                 }
             }
@@ -131,13 +131,13 @@ public class AndroidLocator implements AssetLocator {
                 try {
                     return androidResources.getAssets().openFd(assetPath);
                 } catch (IOException ex) {
-                    throw new AssetLoadException("Failed to open asset " + assetPath, ex);
+                    throw new AssetLoadException(AssetOpenError + assetPath, ex);
                 }
             } else {
                 try {
                     return androidResources.openRawResourceFd(resourceId);
                 } catch (Resources.NotFoundException ex) {
-                    throw new AssetLoadException("Failed to open asset " + assetPath, ex);
+                    throw new AssetLoadException(AssetOpenError + assetPath, ex);
                 }
             }
         }
