@@ -345,13 +345,10 @@ public class AndroidHarness extends Activity implements TouchListener, DialogInt
 
         logger.log(Level.SEVERE, finalMsg);
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AlertDialog dialog = new AlertDialog.Builder(AndroidHarness.this) // .setIcon(R.drawable.alert_dialog_icon)
-                        .setTitle(finalTitle).setPositiveButton("Kill", AndroidHarness.this).setMessage(finalMsg).create();
-                dialog.show();
-            }
+        runOnUiThread(() -> {
+            AlertDialog dialog = new AlertDialog.Builder(AndroidHarness.this) // .setIcon(R.drawable.alert_dialog_icon)
+                    .setTitle(finalTitle).setPositiveButton("Kill", AndroidHarness.this).setMessage(finalMsg).create();
+            dialog.show();
         });
     }
 
