@@ -124,37 +124,8 @@ public class AndroidInputHandler14 extends AndroidInputHandler implements View.O
         if (view != getView()) {
             return false;
         }
-
-        boolean consumed = false;
-
-//        logger.log(Level.INFO, "onKey keyCode: {0}, action: {1}, event: {2}",
-//                new Object[]{KeyEvent.keyCodeToString(keyCode), event.getAction(), event});
-        int source = event.getSource();
-//        logger.log(Level.INFO, "onKey source: {0}", source);
-
-        boolean isTouch =
-                ((source & InputDevice.SOURCE_TOUCHSCREEN) == InputDevice.SOURCE_TOUCHSCREEN) ||
-                ((source & InputDevice.SOURCE_KEYBOARD) == InputDevice.SOURCE_KEYBOARD);
-        boolean isJoystick =
-                ((source & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD) ||
-                ((source & InputDevice.SOURCE_JOYSTICK) == InputDevice.SOURCE_JOYSTICK);
-        boolean isUnknown =
-                (source & android.view.InputDevice.SOURCE_UNKNOWN) == android.view.InputDevice.SOURCE_UNKNOWN;
-
-        if (touchInput != null && (isTouch || (isUnknown && this.touchInput.isSimulateKeyboard()))) {
-//            logger.log(Level.INFO, "onKey source: {0}, isTouch: {1}",
-//                    new Object[]{source, isTouch});
-            consumed = touchInput.onKey(event);
-        }
-        if (isJoystick && joyInput != null) {
-//            logger.log(Level.INFO, "onKey source: {0}, isJoystick: {1}",
-//                    new Object[]{source, isJoystick});
-            // use inclusive OR to make sure the onKey method is called.
-            consumed = consumed | ((AndroidJoyInput14)joyInput).onKey(event);
-        }
-
-        return consumed;
-
+        return consumeEvent(event, touchInput, joyInput);
     }
+
 
 }
